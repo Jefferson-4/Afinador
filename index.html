@@ -9,7 +9,7 @@
 <body>
   <div class="container">
     <header>
-      <h1>Afinador con IA</h1>
+      <h1>Afinaitor</h1>
       <div class="controls">
         <button id="record-btn">🎙 Iniciar grabación</button>
         <button id="stop-btn" disabled>⏹ Detener</button>
@@ -17,25 +17,36 @@
     </header>
 
     <main>
-
-    
-      <!-- Visualizacion de audio -->
+      <!-- Visualización de audio -->
       <section class="waveform-container">
         <canvas id="waveform"></canvas>
         <div class="markers">
-          <label>Inicio: <input type="range" id="start-point" min="0" max="100" value="0"></label>
-          <label>Fin: <input type="range" id="end-point" min="0" max="100" value="100"></label>
+          <label>Inicio:
+            <input type="range" id="start-point" min="0" max="100" value="0">
+          </label>
+          <label>Fin:
+            <input type="range" id="end-point" min="0" max="100" value="100">
+          </label>
         </div>
         <audio id="recorded-audio" controls></audio>
       </section>
 
-
-     
-  <!-- Botón para reproducir solo el fragmento -->
-<button id="play-selection-btn">▶️ Reproducir selección</button>
+      <!-- Botón para reproducir solo el fragmento -->
+      <button id="play-selection-btn">▶️ Reproducir selección</button>
 
 
-  <h2>🎚️ Parámetros de Afinación 🎚️</h2>
+      <!--Vumetro-->
+
+      <div id="vumetro-container">
+        <label>Desafinación:</label>
+        <div id="vumetro">
+          <div id="aguja"></div>
+        </div>
+      </div>
+      
+
+
+      <h2>🎚️ Parámetros de Afinación 🎚️</h2>
 
       <div class="switch-container">
         <label for="modo-escala">Tonalidad</label>
@@ -45,53 +56,58 @@
         </label>
         <span id="modo-label">Mayor</span>
       </div>
+
+      <div class="selector">
+        <label for="escala-select">Tonalidad</label>
+        <select id="escala-select">
+          <option value="C">C</option>
+          <option value="C#">C#</option>
+          <option value="D">D</option>
+          <option value="D#">D#</option>
+          <option value="E">E</option>
+          <option value="F">F</option>
+          <option value="F#">F#</option>
+          <option value="G">G</option>
+          <option value="G#">G#</option>
+          <option value="A">A</option>
+          <option value="A#">A#</option>
+          <option value="B">B</option>
+        </select>
+      </div>
+      <p id="escala-activa" style="text-align: center; margin-top: 0.5rem; font-weight: bold;"></p>
+
+
+      <div class="rotary">
+        <label>Afinación</label>
+        <input type="range" id="tuning-intensity" min="0" max="100" value="35">
+      </div>
+
+      <div class="rotary">
+        <label for="tuning-aggressiveness">Agresividad:</label>
+        <input type="range" id="tuning-aggressiveness" min="0" max="100" value="100">        
+      </div>
+
+
+ 
       
-
-        <div class="selector">
-          <label for="escala-select">Escala</label>
-          <select id="escala-select">
-            <option value="C">C</option>
-            <option value="C#">C#</option>
-            <option value="D">D</option>
-            <option value="D#">D#</option>
-            <option value="E">E</option>
-            <option value="F">F</option>
-            <option value="F#">F#</option>
-            <option value="G">G</option>
-            <option value="G#">G#</option>
-            <option value="A">A</option>
-            <option value="A#">A#</option>
-            <option value="B">B</option>
-          </select>
-        </div>
-
-        <div class="rotary">
-          <label>Afinación</label>
-          <input type="range" id="tuning-intensity" min="0" max="100" value="50">
-        </div>
-
-        <div class="rotary">
-          <label>Volumen</label>
-          <input type="range" id="output-volume" min="0" max="1" step="0.01" value="1">
-        </div>
+      <h3>🎵 Afinación y Resultado 🎵</h3>
+      <section class="output-section">
+        <button id="tune-btn">🎶 Afinar</button>
+        <canvas id="waveform-tuned"></canvas>
+       
+        <button id="play-tuned-btn">▶️ Reproducir afinado</button>
+        <a id="download-btn" href="#" download="afinacion.wav">⬇️ Descargar Afinado</a>
       </section>
-
-      
-
-<h3>🎵 Afinación y Resultado 🎵</h3>
-<section class="output-section">
-  <button id="tune-btn">🎶 Afinar</button>
-
-  <canvas id="waveform-tuned"></canvas>
-  <audio id="tuned-audio" controls></audio>
-  <button id="play-tuned-btn">▶️ Reproducir afinado</button>
-
-  <a id="download-btn" href="#" download="afinacion.wav">⬇️ Descargar Afinado</a>
-</section>
-
     </main>
   </div>
+  <div class="rotary">
+    <label>Nivel de escucha </label>
+    <input type="range" id="output-volume" min="0" max="1" step="0.01" value="1">
+  </div>
 
+  <script src="libs/pitchfinder.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.min.js"></script>
   <script src="script.js"></script>
+
 </body>
 </html>
