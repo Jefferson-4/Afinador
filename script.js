@@ -345,11 +345,12 @@ function generarEscala(raiz, modo) {
       const outputBuffer = new Float32Array(fragment.length + 2 * windowSize);
       const sumaHann = new Float32Array(outputBuffer.length);
 
-      let cursor = 0;
-
+      
       for (let i = 0; i + windowSize <= fragment.length; i += hopSize) {
         let window = fragment.slice(i, i + windowSize);
-window = filtroSuavizado(window); // 👈 Aplica filtro FIR de suavizado
+        window = filtroSuavizado(window); // 👈 Aplica filtro FIR de suavizado
+        
+
         const freq = detectarPitch(window);
         if (!freq) continue;
       
@@ -389,15 +390,12 @@ document.getElementById("aguja").style.left = `${porcentaje * 100}%`;
         
       
         for (let j = 0; j < corrected.length; j++) {
-          const hannIndex = Math.floor(j * hann.length / corrected.length);
-          const w = hann[hannIndex];
-          const pos = cursor + j;
-        
-          outputBuffer[pos] += corrected[j] * w;
-          sumaHann[pos] += w;
-        }
-        cursor += hopSize; // 👈 mueve el cursor al siguiente bloque
-        
+            const hannIndex = Math.floor(j * hann.length / corrected.length);
+            const w = hann[hannIndex];
+            corrected[j] *= w;
+            outputBuffer[i + j] += corrected[j];
+            sumaHann[i + j] += w;
+          }
           
       }
       for (let i = 0; i < outputBuffer.length; i++) {
@@ -533,4 +531,3 @@ function audioBufferToWav(buffer) {
   
     return new Blob([view], { type: 'audio/wav' });
   }
-
